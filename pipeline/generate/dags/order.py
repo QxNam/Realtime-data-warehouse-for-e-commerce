@@ -4,9 +4,16 @@ from airflow.decorators import dag, task
 
 import psycopg2
 import random
-import time
+import time, os
 from datetime import datetime
 import pandas as pd
+from dotenv import load_dotenv
+load_dotenv()
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 
 def _get_length(conn, table_name):
     with conn.cursor() as cursor:
@@ -101,11 +108,11 @@ def insert_order(conn):
 def main():
     # Cấu hình kết nối tới PostgreSQL
     conn = psycopg2.connect(
-        host="crawl.serveftp.com",
-        port="5567",
-        database="postgres",
-        user="iuhkart",
-        password="iuhkartpassword"
+        host=POSTGRES_HOST,
+        port=POSTGRES_PORT,
+        database=POSTGRES_DB,
+        user=POSTGRES_USER,
+        password=POSTGRES_PASSWORD
     )
     print("✅ Kết nối tới PostgreSQL thành công.")
 
